@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
+<base href="/ewsoft/">
 <meta charset="utf-8">
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -91,6 +92,14 @@
 			<dd>
 				<ul>
 					<li><a _href="stock/stockList" data-title="Stock Item" href="javascript:void(0)">Stock Item</a></li>
+				</ul>
+			</dd>
+		</dl>
+		<dl id="menu-customer">
+			<dt><i class="Hui-iconfont">&#xe616;</i> Customer <i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a _href="customer/customerList" data-title="Customer Listing" href="javascript:void(0)"> Customer Listing</a></li>
 				</ul>
 			</dd>
 		</dl>
