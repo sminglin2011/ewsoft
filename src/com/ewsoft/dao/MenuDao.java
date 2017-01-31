@@ -122,5 +122,16 @@ public class MenuDao {
 				+ " where mi.menuCategoryType = 'menu-item-group' and mi.menuGroupId = ? and mi.menuId = ?", menuGroupId, menuId);
 		return list;
 	}
+	public List fetchMenuItemGroupList() throws DataAccessException {
+		List list = null;
+		list = jdbcTemplate.queryForList(
+				"select mi.code, mi.menuGroupId, mi.menuId, mi.kitchen, mi.chief, mi.remark, mi.sequence, mi.menuItem"
+				+ ", mi.section, mi.addOn, mi.addPrice, mi.menuItemName, mi.menuItemOrigName, mi.itemId, mi.menuCategoryType"
+				+ ", mi.limitSelection, mi.optional, mi.prepareQty, mi.prepareUnitMs, mi.noDel, mi.price, mr.url"
+				+ " from m33menuitem mi left join m33menuresource mr on mi.menuGroupId = mr.menuGroupId"
+				+ " and mi.menuId = mr.menuId and mi.itemId = mr.itemId and mr.itemType = 'Item'"
+				+ " where mi.menuCategoryType = 'menu-item-group' ");
+		return list;
+	}
 	/************* original field end *****************/
 }

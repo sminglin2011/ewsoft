@@ -30,8 +30,11 @@ public class CustomerController extends BaseController{
 	/****************************** page forward ***************************************/
 	@RequestMapping(value="/backend/customerList")
     public ModelAndView ewGoToPageCustomerList(HttpServletRequest request, HttpServletResponse response) throws Exception{
-//		logger.debug("online stock list!!!!!!!!!!!");
 		return new ModelAndView("customer/customer-list");
+	}
+	@RequestMapping(value="/backend/customerNew")
+    public ModelAndView ewGoToPageCustomerNew(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		return new ModelAndView("customer/customer-new");
 	}
 	/****************************** ***************************************/
 	@ResponseBody

@@ -33,26 +33,20 @@
         <div class="formControls col-xs-2">
             <input type="text" class="input-text disabled" ng-model="so.soNumber" >
         </div>
-        <label class="form-label col-xs-2"><span class="c-red">*</span>Postal Code:</label>
-        <div class="formControls col-xs-2">
-            <input type="text" class="input-text date" ng-model="so.postal" 
-             datatype="*">
-        </div>
-    </div>
-	<div class="row cl">
         <label class="form-label col-xs-2"><span class="c-red">*</span>Customer Name:</label>
-        <div class="formControls col-xs-2">
+        <div class="formControls col-xs-4">
         	<span class="select-box">
-				<select ng-model="so.custName" class="select">
-                    <option value="{{ c.custCode }}" ng-repeat="c in customerList">{{ c.custName}}</option>
+				<select ng-model="so.custCode" class="select">
+                    <option value="{{ c.id }}" ng-repeat="c in customerList track by c.code">{{ c.name}} / {{c.contactPerson}} / {{c.telephone}}</option>
                 </select>
             </span>
         </div>
-        
-        <label class="form-label col-xs-2"><span class="c-red">*</span>Address:</label>
-        <div class="formControls col-xs-4">
-            <input type="text" class="input-text date" ng-model="so.address" 
-             datatype="*">
+        <label class="form-label col-xs-1"><a href="#newCustomer1" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe600;</i>New</a></label>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-2">Address:</label>
+        <div class="formControls col-xs-6">
+            <input type="text" class="input-text" ng-model="so.a.address" >
         </div>
     </div>
     <div class="row cl">
@@ -93,7 +87,7 @@
 		<label class="form-label col-xs-2">Menu Group:</label>
         <div class="formControls col-xs-3">
             <span class="select-box">
-				<select ng-model="delivery.menuGorupId" class="select" style="width:100%;" >
+				<select ng-model="delivery.menuGorupId" class="select" style="width:100%;">
                     <option value="{{ menuGroup.menuGroupId }}" ng-repeat="menuGroup in menuGroupList track by menuGroup.code">{{ menuGroup.menuGroupName }}</option>
                 </select>
             </span>
@@ -101,12 +95,38 @@
         <label class="form-label col-xs-2">Menu:</label>
         <div class="formControls col-xs-3">
             <span class="select-box">
-				<select ng-model="delivery.menuId" class="select" style="width:100%;">
-                    <option value="{{ menu.menuId }}" ng-repeat="menu in menuList track by menu.code">{{ menu.menuName }}</option>
+				<select ng-model="delivery.menuId" class="select" style="width:100%;" ng-change="selectedMenu($index+1)">
+                    <option value="{{ menu.menuId }}" ng-repeat="menu in menuList | filter : {menuGroupId: delivery.menuGorupId} track by menu.code">{{ menu.menuName }}</option>
                 </select>
             </span>
         </div>
         </div>
+	    <div class="row cl">
+	    	<div class="formControls col-xs-12">
+	           	<div class="panel panel-success">
+					<div class="panel-header">Selected Items</div>
+					<div class="panel-body">
+						<div ng-repeat="selectedItem in so.selectedItems track by selectedItem.id">
+	            		{{selectedItem.menuItemName}}<a href="javascript:;" class="ml-5" style="text-decoration:none"
+	            		ng-click="removeSelectedItem(selectedItem, so.selectedItems)"><i class="Hui-iconfont">&#xe6e2;</i></a>
+	            		</div>
+					</div>
+				</div>
+	        </div>
+	    </div>
+	    <div class="row cl">
+	    	<div class="formControls col-xs-12">
+	           	<div class="panel panel-success">
+					<div class="panel-header">Additional Items</div>
+					<div class="panel-body">
+						<div ng-repeat="selectedItem in so.selectedItems track by selectedItem.id">
+	            		{{selectedItem.menuItemName}}<a href="javascript:;" class="ml-5" style="text-decoration:none"
+	            		ng-click="removeSelectedItem(selectedItem, so.selectedItems)"><i class="Hui-iconfont">&#xe6e2;</i></a>
+	            		</div>
+					</div>
+				</div>
+	        </div>
+	    </div>
     </expander>
   	</accordion>
     
@@ -116,6 +136,7 @@
     </form>
 </div>
 </body>
+
 <script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script> 
 <script type="text/javascript" src="lib/layer/2.1/layer.js"></script>
 <script type="text/javascript" src="lib/laypage/1.2/laypage.js"></script> 
@@ -127,17 +148,43 @@
 <script type="text/javascript" src="lib/My97DatePicker/ng-WdatePicker.js"></script>
 <script type="text/javascript" src="lib/select2-4.0.3/dist/js/select2.js"></script>
 <link rel="stylesheet" type="text/css" href="lib/select2-4.0.3/dist/css/select2.css" />
+<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-route.js"></script>
 
 <script type="text/javascript">
 $(function(){
 	$(".select").select2();
 	$.Huifold("#Huifold1 .item h4","#Huifold1 .item .info","fast",1,"click"); /*5个参数顺序不可打乱，分别是：相应区,隐藏显示的内容,速度,类型,事件*/
 });
-angular.module('app', ["ng-WdatePicker"]).controller('myController', function ($scope, $http) {
-	$scope.Delivery4 = [{title:'Delivery 1'}, {title:'Delivery 2'}, {title:'Delivery 3'}, {title:'Delivery 4'}];
-  	$scope.so = {};
+var obj = {address:'111'};
+angular.module('app', ["ng-WdatePicker","ngRoute"]).controller('myController', function ($scope, $http) {
+	$scope.Delivery4 = [
+	                      {title:'Delivery 1', menuGroupId: '', addistionItems:[]}
+	                    , {title:'Delivery 2', menuGroupId: '', addistionItems:[]}
+						, {title:'Delivery 3', menuGorupId: '', addistionItems:[]}
+						, {title:'Delivery 4', menuGroupId: '', addistionItems:[]}
+						];
+  	$scope.so = {customer:{}};
+  	$scope.so.customer = obj;
+  	$scope.so.a = obj;
   	$scope.timeSheet = [];
   	$http.get("fetchTimeSheet").then(function(response){$scope.timeSheet = response.data;});
+  	$scope.customerList = [];
+  	$http.get("fetchCustomerList").then(function(response){$scope.customerList = response.data;});
+  	$scope.menuGroupList = [];
+  	$http.get("fetchMenuGroupList").then(function(response){$scope.menuGroupList = response.data;});
+  	$scope.menuList = [];
+  	$http.get("fetchAllMenu").then(function(response){$scope.menuList = response.data;});
+  	$scope.menuItemGroupList = [];
+  	$http.get("fetchAllMenuItemGroup").then(function(response){$scope.menuItemGroupList = response.data;});
+  	$scope.menuItemList = [];
+  	$http.get("fetchAllMenuItem").then(function(response){$scope.menuItemList = response.data;});
+  	$scope.newCustomer = function() {
+  		layer_show("New Customer","backend/customerNew",800,520);
+  	}
+  	$scope.selectedMenu = function(index) {
+  		//layer_show("New Customer",$('#menuItemDiv'+index),800,520);
+  		
+  	}
 }).directive('accordion',function(){
 	  return {
 	        restrict : 'EA',
@@ -180,5 +227,19 @@ angular.module('app', ["ng-WdatePicker"]).controller('myController', function ($
 	            };
 	        }
 	    };
+}).config(function($routeProvider) {
+    $routeProvider
+    .when("/newCustomer1", {
+        templateUrl : "welcome.jsp"
+    })
+    .when("/red", {
+        templateUrl : "red.htm"
+    })
+    .when("/green", {
+        templateUrl : "green.htm"
+    })
+    .when("/blue", {
+        templateUrl : "blue.htm"
+    });
 });
 </script> 

@@ -103,6 +103,13 @@ public class MenuController extends BaseController{
 		return JsonView.Render(list, res);
 	}
 	@ResponseBody
+	@RequestMapping(value="/fetchAllMenuItemGroup")
+	public Object fetchAllMenuItemGroup(ModelMap model, HttpServletResponse res) throws Exception {
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		log.debug("coming !!!!!!!");
+		return JsonView.Render(menuSvc.loadAllMenuItemGroup(), res);
+	}
+	@ResponseBody
 	@RequestMapping(value="/fetchAllMenuItem")
 	public Object fetchAllMenuItem(ModelMap model, HttpServletResponse res) throws Exception {
 		res.setHeader("Access-Control-Allow-Origin", "*");

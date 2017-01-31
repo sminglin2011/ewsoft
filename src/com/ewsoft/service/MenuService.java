@@ -52,6 +52,14 @@ public class MenuService {
 		return list;
 	}
 	/**
+	 * load all menuItemGroup to list
+	 * @return
+	 */
+	public List loadAllMenuItemGroup() {
+		List list = menuDao.fetchMenuItemGroupList();
+		return list;
+	}
+	/**
 	 * fetch all menuItem to list
 	 * @return
 	 */

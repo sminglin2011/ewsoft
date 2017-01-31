@@ -25,7 +25,7 @@ public class CustomerDao {
 	public List fetchCustomerList() throws DataAccessException {
 		List list = null;
 		list = jdbcTemplate.queryForList(
-				"select c.isCustomer, c.id, c.name, c.addPostal, c.telephone, c.fax, c.billAddress1, c.billPostal"
+				"select c.code, c.isCustomer, c.id, c.name, c.addPostal, c.telephone, c.fax, c.billAddress1, c.billPostal"
 				+ ", c.contactPerson, c.address1, c.contactPersonEmail, c.arTerm, c.billTelephone, c.billFax"
 				+ ", c.billContactPerson"
 				+ " from m03company c where c.isCustomer = 'true'");

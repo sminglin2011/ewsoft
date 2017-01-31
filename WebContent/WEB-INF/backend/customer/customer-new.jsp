@@ -25,10 +25,9 @@
 <title></title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> Home <span class="c-gray en">&gt;</span> Customer Listing  <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="Reload" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="text-c">
-		<form class="form form-horizontal" id="form-customer">
+		<form action="saveCustomer.htm" method="post" class="form form-horizontal responsive" id="form-customer">
+			<h5>Billing Information</h5>
 			<div class="row cl">
                 <label class="form-label col-xs-2">Customer Name</label>
                 <div class="formControls col-xs-4">
@@ -64,8 +63,37 @@
                     <input type="text" ng-model="customer.address1" datatype="*4-50" class="input-text">
                 </div>
 			</div>
+			<span><input type="checkbox" id="sameas" checked disabled="disabled">same as bill information</span>
+			<h5>Delivery Information</h5>
+			<div class="line"></div>
 			<div class="row cl">
-                <div class="formControls col-xs-12">
+                <label class="form-label col-xs-2">Contact Person</label>
+                <div class="formControls col-xs-4">
+                    <input type="text" ng-model="customer.contactPerson" datatype="*4-50" class="input-text">
+                </div>
+			</div>
+			<div class="row cl">
+                <label class="form-label col-xs-2">Telephone</label>
+                <div class="formControls col-xs-2">
+                    <input type="text" ng-model="customer.telephone" datatype="*4-50" class="input-text">
+                </div>
+                <label class="form-label col-xs-2">Fax</label>
+                <div class="formControls col-xs-2">
+                    <input type="text" ng-model="customer.fax" datatype="*4-50" class="input-text">
+                </div>
+			</div>
+			<div class="row cl">
+                <label class="form-label col-xs-2">PostalCode</label>
+                <div class="formControls col-xs-2">
+                    <input type="text" ng-model="customer.addPostal" datatype="*4-50" class="input-text">
+                </div>
+                <label class="form-label col-xs-2">Address</label>
+                <div class="formControls col-xs-6">
+                    <input type="text" ng-model="customer.address1" datatype="*4-50" class="input-text">
+                </div>
+			</div>
+			<div class="row cl">
+                <div class="formControls col-xs-7 col-xs-offset-5">
                     <button class="btn btn-success" ng-click="saveFunction()">
                         <i class="Hui-iconfont Hui-iconfont-save"></i> Save
                     </button>
@@ -73,18 +101,6 @@
             </div>
 		</form>
 	</div>
-	<div class="mt-20">
-	<table class="table table-border table-bordered table-hover table-bg table-sort"
-            my-table="overrideOptions"
-        	aa-data="sampleData"
-        	ao-columns="columns"
-        	ao-column-defs="columnDefs"
-        	fn-row-callback="myCallback"
-            >
-            
-        </table>
-	</div>
-</div>
 	<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>
     <script type="text/javascript" src="lib/datatables/jquery.dataTables.js"></script>
 	<script type="text/javascript" src="lib/Validform/5.3.2/Validform.min.js"></script>
@@ -97,58 +113,25 @@
     <script type="text/javascript" src="js/app.js"></script>
 </body>
 <script type="text/javascript">
+(function(){
+	 var validForm = $("#form-customer").Validform({
+			tiptype:0,
+			beforeSubmit:function(form) { // here must return false to stop submit data by form
+	            console.log("click save")
+				return false;
+			}
+		});
+})()
 	app.controller("myController", function($scope, $http, $filter) {
 		$scope.customer = {};
 		$scope.saveFunction = function() {
 			console.log("save");
 			layer.msg('save model, in development!', {icon: 5,time:2000});
+			var index = parent.layer.getFrameIndex(window.name);
+			parent.obj = $scope.customer;
+			console.log(parent.obj);
+			parent.layer.close(index);
 		}
-		Ctrl($scope, $http, $filter);
 	})
-	function Ctrl($scope, $http, $filter){
-		$scope.options = {};
-		$scope.overrideOptions = {
-			   // ordering:  false
-		};
-		$scope.sampleData = '';
-		$http.get("fetchCustomerList")
-			.then(function (response) {if(response.data != null && response.data != '')$scope.sampleData=response.data });
-		$scope.columns = [ 
-            // {"title":"Sn", width:"5%", className: "text-c", "visible":true, "data": null, defaultContent:1}
-            {"title":"ID", width:"5%", className: "text-c", "visible":true, "data": "id"}
-            ,{"title":"Customer Name", width:"15%", className: "text-c", "visible":true, "data": "name"}
-            ,{"title":"Contact Person", width:"10%", className: "text-c", "visible":true, "data": "contactPerson"}
-            ,{"title":"Telephone", width:"10%", className: "text-c", "visible":true, data:'telephone', orderable:false}
-            ,{"title":"Email", width:"10%", className: "text-c", "visible":true, data:'contactPersonEmail', orderable:false}
-            ,{"title":"PostalCode", width:"10%", className: "text-c", "visible":true, data:'addPostal', orderable:false}
-            ,{"title":"Address", width:"20%", className: "text-c", "visible":true, data:'address1', orderable:false}
-            ,{"title":"Action", width:"10%", className: "text-c", "visible":true, orderable:false, searchable: false
-             , render: function(data, type, row) {
-                 return "<a style='text-decoration:none' class='ml-5 edit' id='edit' href='javascript:;' title='Edit'><i class='Hui-iconfont Hui-iconfont-edit'></i></a>"
-                                    +"<a style='text-decoration:none' class='ml-5 del' id='del' href='javascript:;'      title='Delete'><i class='Hui-iconfont Hui-iconfont-del3'></i></a>";
-             }}
-				]; 
-		$scope.myCallback = function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {            
-	        $('td', nRow).find('.edit').bind('click', function() {
-	            $scope.$apply(function() {
-	                $scope.editFunction(aData);
-	            });
-	        });
-	        $('td', nRow).find('.del').bind('click', function() {
-	            $scope.$apply(function() {
-	                $scope.delFunction(aData);
-	            });
-	        });
-	        return nRow;
-	    };
-	    
-	    $scope.editFunction = function(obj) {
-	    	$scope.customer = obj;
-            backTop();
-	    }
-		$scope.delFunction = function(obj) {
-			layer.msg('delete model, in development!', {icon: 5,time:2000});
-	    }
-	}
 	
 </script> 
