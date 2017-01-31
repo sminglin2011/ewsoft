@@ -103,6 +103,14 @@
 				</ul>
 			</dd>
 		</dl>
+		<dl id="menu-setting">
+			<dt><i class="Hui-iconfont">&#xe616;</i> System Setup <i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a _href="system/timeSheet" data-title="Customer Listing" href="javascript:void(0)"> Time Sheet</a></li>
+				</ul>
+			</dd>
+		</dl>
 	</div>
 </aside>
 <div class="dislpayArrow hidden-xs"><a class="pngfix" href="javascript:void(0);" onClick="displaynavbar(this)"></a></div>

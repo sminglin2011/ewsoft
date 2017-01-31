@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ewsoft.service.OrderConfirmationService;
+import com.ewsoft.service.SystemService;
 import com.ewsoft.views.JsonView;
 
 @Controller
@@ -24,6 +25,8 @@ public class OrderConfirmationController extends BaseController{
 	Logger logger = Logger.getLogger(OrderConfirmationController.class);
 	@Autowired
 	private OrderConfirmationService orderSvc;
+	@Autowired
+	private SystemService timeSheetSvc;
 	
 	/****************************** page forward ***************************************/
 	@RequestMapping(value="/order/orderList")
@@ -45,5 +48,12 @@ public class OrderConfirmationController extends BaseController{
 		//res.setHeader("Access-Control-Allow-Headers","x-requested-with,content-type");
 		log.debug("coming !!!!!!!");
 		return JsonView.Render(orderSvc.loadOrderConfirmationByKeyword(""), res);
+	}
+	@ResponseBody
+	@RequestMapping(value="/fetchTimeSheet")
+	public Object fetchTimeSheet(ModelMap model, HttpServletResponse res) throws Exception {
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		log.debug("coming !!!!!!!");
+		return JsonView.Render(timeSheetSvc.loadTimeSheet(), res);
 	}
 }

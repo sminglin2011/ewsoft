@@ -38,6 +38,7 @@
         <span class="l">
         <!--<a href="javascript:;" onclick="datadel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> -->
         <a _href="order/orderNew" data-title=" New Order Confirmation" onclick="Hui_admin_tab(this)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> New Order</a>
+        <a ng-click="postAccount()" class="btn btn-danger radius">PostAccount</a>
         </span>
         <span class="r"></span> </div>
 	<div class="mt-20">
@@ -66,18 +67,42 @@
 </body>
 <script type="text/javascript">
 	app.controller("myController", function($scope, $http, $filter) {
+		$scope.selectedIds = [];
+		$scope.postAccount = function() {
+			if ($scope.selectedIds.length > 0) {
+				layer.confirm('confirm post to account?', {
+					  btn: ['Confirm', 'Cancel'] //可以无限个按钮
+					}, function(index, layero){
+					  //按钮【按钮一】的回调
+						console.log(index, layero, "btn1");
+						layer.close(index);
+					  $
+					}, function(index){
+					  //按钮【按钮二】的回调
+						console.log(index, "btn2");
+					});
+			} else {
+				//layer.msg("selected row first", {icon:5,time:5000})
+				layer.alert("selected row first", {icon: 5})
+			}
+		}
 		Ctrl($scope, $http, $filter);
 	})
 	function Ctrl($scope, $http, $filter){
 		$scope.options = {};
 		$scope.overrideOptions = {
-			   // ordering:  false
+			//ordering:  false,
+			order: [],
+			select: true
 		};
 		$scope.sampleData = '';
-		$http.get("fetchOrderConfrimationList")
-			.then(function (response) {if(response.data != null && response.data != '')$scope.sampleData=response.data });
+		$http.get("fetchOrderConfrimationList").then(function (response) {if(response.data != null && response.data != '')$scope.sampleData=response.data });
 		$scope.columns = [ 
-             {"title":"Status", width:"5%", className: "text-c", "visible":true, "data": "postStatus"}
+			 {"title":'', width:"5%", className: "text-c", "visible":true, orderable:false
+				,render:function(data, type, row){
+					if (row.billStatus == 'Y') { return ''} else return '<input type="checkbox" class="soNumber" value="'+row.soNumber+'">';
+			 }}
+            ,{"title":"Status", width:"5%", className: "text-c", "visible":true, "data": "postStatus"}
             ,{"title":"BST", width:"5%", className: "text-c", "visible":true, "data": "billStatus"}
             ,{"title":"Order NO.", width:"10%", className: "text-c", "visible":true, "data": "soNumber"}
             ,{"title":"Customer Name", width:"10%", className: "text-c", "visible":true, "data": "custName"}
@@ -95,25 +120,39 @@
             ,{"title":"Invoice NO.", width:"10%", className: "text-c", "visible":true, "data": "invNo"}
             ,{"title":"Action", width:"5%", className: "text-c", "visible":true, orderable:false
              , render: function(data, type, row) {
-                 return "<a style='text-decoration:none' class='ml-5 edit' id='edit' href='javascript:;' title='Edit'><i class='Hui-iconfont Hui-iconfont-edit'></i></a>"
-                                    +"<a style='text-decoration:none' class='ml-5 del' id='del' href='javascript:;'      title='Delete'><i class='Hui-iconfont Hui-iconfont-del3'></i></a>";
+            	 if(row.billStatus == 'Y') {
+            		 return '' ;
+            	 } else {
+            		 return "<a style='text-decoration:none' class='ml-5 edit' id='edit' href='javascript:;' title='Edit'><i class='Hui-iconfont Hui-iconfont-edit'></i></a>"
+            		 +"<a style='text-decoration:none' class='ml-5 del' id='del' href='javascript:;' title='Delete'><i class='Hui-iconfont Hui-iconfont-del3'></i></a>";
+            	 }
+                                    
              }}
 				]; 
 		$scope.myCallback = function(nRow, aData, iDisplayIndex, iDisplayIndexFull) {            
-	        $('td:eq(2)', nRow).bind('click', function() {
+	        $('td:eq(0)', nRow).find('input').bind('click', function() {
+	        	console.log($(this).is(':checked'), "checked??");
+	        	var checked = $(this).is(':checked');
 	            $scope.$apply(function() {
-	                $scope.someClickHandler(aData);
+	                $scope.selectedRow(aData, nRow, checked);
 	            });
 	        });
 	        $('td:eq(1)', nRow).find("a").bind('click', function() {
 	            $scope.$apply(function() {
-	                $scope.someClickHandler(aData);
+	                $scope.someClickHandler(aData, nRow);
 	            });
 	        });
 	        return nRow;
 	    };
-	    $scope.someClickHandler = function(info) {
-	        $scope.message = 'clicked: '+ info.online;
+	    $scope.selectedRow = function(rowObj, nRow, checked) {
+	    	if(checked) {
+	    		$scope.selectedIds.push(rowObj.soNumber);
+	    		$(nRow).addClass("selected");
+	    	} else {
+	    		$scope.selectedIds.splice($scope.selectedIds.indexOf(rowObj.soNumber), 1);
+	    		$(nRow).removeClass("selected");
+	    	}
+	        console.log($scope.selectedIds);
 	    };
 	}
 	

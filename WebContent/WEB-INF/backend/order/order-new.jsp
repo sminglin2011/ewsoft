@@ -27,7 +27,7 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> Home <span class="c-gray en">&gt;</span> New Order Confirmation  <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="Reload" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-    <form action="" method="post" class="form form-horizontal responsive" id="form-orderConfirmation">
+    <form class="form form-horizontal responsive" id="form-orderConfirmation">
     <div class="row cl">
         <label class="form-label col-xs-2">Order Number:</label>
         <div class="formControls col-xs-2">
@@ -43,7 +43,7 @@
         <label class="form-label col-xs-2"><span class="c-red">*</span>Customer Name:</label>
         <div class="formControls col-xs-2">
         	<span class="select-box">
-				<select ng-model="customer.custName" class="select">
+				<select ng-model="so.custName" class="select">
                     <option value="{{ c.custCode }}" ng-repeat="c in customerList">{{ c.custName}}</option>
                 </select>
             </span>
@@ -51,105 +51,68 @@
         
         <label class="form-label col-xs-2"><span class="c-red">*</span>Address:</label>
         <div class="formControls col-xs-4">
-            <input type="text" class="input-text date" ng-model="so.postal" 
+            <input type="text" class="input-text date" ng-model="so.address" 
              datatype="*">
         </div>
     </div>
     <div class="row cl">
-    	<label class="form-label col-xs-2"><span class="c-red">*</span>Start Date:</label>
-        <div class="formControls col-xs-2">
-            <input type="text" class="input-text date" ng-model="startDate" wdate-picker >
+        <label class="form-label col-xs-2"><span class="c-red">*</span>Event Date:</label>
+        <div class="formControls col-xs-1">
+        	<input type="text" class="input-text date" ng-model="so.eventDate" datatype="*">
         </div>
-        <label class="form-label col-xs-2"><a class="btn btn-danger radius" ng-click="changeDate()"><i class="Hui-iconfont">&#xe6f7;</i>Change Start Date</a></label>
+        
+        <label class="form-label col-xs-2"><span class="c-red">*</span>Event Time:</label>
+        <div class="formControls col-xs-1">
+            <span class="select-box">
+				<select ng-model="so.eventTime" class="select">
+                    <option value="{{ t.time }}" ng-repeat="t in timeSheet | filter:{blocked:false} track by t.time">{{t.time}}</option>
+                </select>
+            </span>
+        </div>
+        <label class="form-label col-xs-2"><span class="c-red">*</span>Delivery Time:</label>
+        <div class="formControls col-xs-1">
+            <span class="select-box">
+				<select ng-model="so.deliveryTime" class="select">
+                    <option value="{{ t.time }}" ng-repeat="t in timeSheet | filter:{blocked:false} track by t.time">{{t.time}}</option>
+                </select>
+            </span>
+        </div>
+        <label class="form-label col-xs-2"><span class="c-red">*</span>Collection Time:</label>
+        <div class="formControls col-xs-1">
+            <span class="select-box">
+				<select ng-model="so.collectionTime" class="select">
+                    <option value="{{ t.time }}" ng-repeat="t in timeSheet | filter:{blocked:false} track by t.time">{{t.time}}</option>
+                </select>
+            </span>
+        </div>
     </div>
+    
+    <accordion>
+	<expander class='expander' ng-repeat='delivery in Delivery4' expander-title='delivery.title'>
+		<div class="row cl">
+		<label class="form-label col-xs-2">Menu Group:</label>
+        <div class="formControls col-xs-3">
+            <span class="select-box">
+				<select ng-model="delivery.menuGorupId" class="select" style="width:100%;" >
+                    <option value="{{ menuGroup.menuGroupId }}" ng-repeat="menuGroup in menuGroupList track by menuGroup.code">{{ menuGroup.menuGroupName }}</option>
+                </select>
+            </span>
+        </div>
+        <label class="form-label col-xs-2">Menu:</label>
+        <div class="formControls col-xs-3">
+            <span class="select-box">
+				<select ng-model="delivery.menuId" class="select" style="width:100%;">
+                    <option value="{{ menu.menuId }}" ng-repeat="menu in menuList track by menu.code">{{ menu.menuName }}</option>
+                </select>
+            </span>
+        </div>
+        </div>
+    </expander>
+  	</accordion>
+    
 	<div class="mt-20">
-	<div id="tab_demo" class="HuiTab">
-      <div class="tabBar clearfix"><span ng-repeat="tab in tabs track by $index">{{tab.title}}</span></div>
-      <div class="tabCon" ng-repeat="tab in tabs track by tab.title">
-          <ul id="Huifold{{$index}}" class="Huifold">
-			  <li class="item" ng-repeat="so in tab.deliverySo track by so.noDel">
-			    <h4>Delivery {{$index+1}}<b>+</b></h4>
-			    <div class="info">
-			    <!-- Delivery -->
-			    <div class="row cl">
-			    	<label class="form-label col-xs-2">No. Pax:</label>
-			    	<div class="formControls col-xs-2">
-			            <input class="input-text" type="text" ng-model="so.noPax">
-			        </div>
-			        <label class="form-label col-xs-2">Price Per Pax:</label>
-			    	<div class="formControls col-xs-2">
-			            <input class="input-text" type="text" ng-model="so.unitPrice">
-			        </div>
-			    </div>
-			    <div class="row cl">
-			        <label class="form-label col-xs-2">Menu Category:</label>
-			        <div class="formControls col-xs-4">
-			            <span class="select-box">
-							<select ng-model="so.menuCategory" class="select" style="width:250px">
-			                    <option value="{{ category.categoryId }}" ng-repeat="category in menuCategoryList track by category.id">{{ category.categoryName }}</option>
-			                </select>
-			            </span>
-			        </div>
-			        <label class="form-label col-xs-2">Menu:</label>
-			        <div class="formControls col-xs-4">
-			            <span class="select-box">
-							<select ng-model="so.menu" class="select" style="width:250px">
-			                    <option value="{{ menu.menuId }}" ng-repeat="menu in menuList | filter:{categoryId: so.menuCategory} track by menu.menuId">{{ menu.menuName }}</option>
-			                </select>
-			            </span>
-			        </div>
-			    </div>
-			    <div class="row cl" ng-if="so.menu">
-			    	<div class="formControls col-xs-4" ng-repeat="itemGroup in menuItemGroupList | filter:{menuId: so.menu} track by itemGroup.id">
-			    		<ul> <strong ng-model="itemGroup.sequence">{{itemGroup.groupName}}</strong><br>
-			    			<div class="check-box" ng-show="so.menu"
-			    				ng-repeat="item in menuItemList | filter:{menuId: so.menu, sequence:itemGroup.sequence} track by item.id">
-								<label>
-								<input type="checkbox" ng-checked="ngCheckItem(item, so.selectedItems)" 
-									ng-click="toggleSelection($event, itemGroup, item, so.selectedItems)"
-								  >
-								{{item.menuItemName}}</label>
-							</div>
-			    		</ul>
-			    	</div>
-			    </div>
-			    <div class="row cl">
-			    	<div class="formControls col-xs-12">
-			           	<div class="panel panel-success">
-							<div class="panel-header">Selected Items</div>
-							<div class="panel-body">
-								<div ng-repeat="selectedItem in so.selectedItems track by selectedItem.id">
-			            		{{selectedItem.menuItemName}}<a href="javascript:;" class="ml-5" style="text-decoration:none"
-			            		ng-click="removeSelectedItem(selectedItem, so.selectedItems)"><i class="Hui-iconfont">&#xe6e2;</i></a>
-			            		</div>
-							</div>
-						</div>
-			        </div>
-			    </div>
-			    <div class="row cl">
-			    	<div class="formControls col-xs-12">
-			           	<div class="panel panel-danger">
-							<div class="panel-header">Additional Items</div>
-							<div class="panel-body">
-								<div class="check-box" ng-show="so.menu"
-				    				ng-repeat="addOnItem in menuItemList | filter:{menuId: so.menu, addOn:true} track by addOnItem.id">
-									<label>
-									<input type="checkbox" ng-model="so.selectedAddOnItems[$index]" ng-true-value="{{addOnItem}}" >
-									{{addOnItem.menuItemName}}</label><label> {{addOnItem.price | currency}}</label>
-									 Quantity <input type="text" class="input-text" style="width:40px" 
-									 	ng-model="so.selectedAddOnItems[$index].quantity"> {{addOnItem.prepareUnitMs}}
-								</div>
-							</div>
-						</div>
-			        </div>
-			    </div>
-			    <!-- Delivery -->
-			    </div>
-			  </li>
-		  </ul>
-      </div>
-    </div>
-  </div>
+	
+  	</div>
     </form>
 </div>
 </body>
@@ -166,125 +129,56 @@
 <link rel="stylesheet" type="text/css" href="lib/select2-4.0.3/dist/css/select2.css" />
 
 <script type="text/javascript">
-function initPanel() {
-        for(var i=0; i<30; i++) {
-            $.Huifold("#Huifold"+i+" .item h4","#Huifold"+i+" .item .info","fast",2,"click"); 
-        }
-    }
 $(function(){
 	$(".select").select2();
-    $.Huitab("#tab_demo .tabBar span","#tab_demo .tabCon","current","click","0");
-    //$.Huifold("#Huifold0 .item h4","#Huifold0 .item .info","fast",2,"click"); /*5个参数顺序不可打乱，分别是：相应区,隐藏显示的内容,速度,类型,事件*/
-    
-    initPanel();
+	$.Huifold("#Huifold1 .item h4","#Huifold1 .item .info","fast",1,"click"); /*5个参数顺序不可打乱，分别是：相应区,隐藏显示的内容,速度,类型,事件*/
 });
-	angular.module('app', ["ng-WdatePicker"]);
-    angular.module('app').controller('myController', function ($scope, $http) {
-	$scope.customer = {};
-	$scope.tabs = [];
-	
-	$scope.menuCategoryList = [];
-	$scope.menuList = [];
-	$scope.menuItemGroupList = [];
-	$scope.menuItemList = [];
-	
-	$http.get("http://ews-web.servebbs.com:8090/zsoft/fetchMenuCategory.ewsvc")
-		.then(function (response) {console.log(response.data);$scope.menuCategoryList=response.data });
-	$http.get("http://ews-web.servebbs.com:8090/zsoft/fetchMenu.ewsvc")
-		.then(function (response) {console.log(response.data);$scope.menuList=response.data });
-	$http.get("http://ews-web.servebbs.com:8090/zsoft/fetchMenuItemGroup.ewsvc")
-		.then(function (response) {console.log("meniItemGroup",response.data);$scope.menuItemGroupList=response.data });
-	$http.get("http://ews-web.servebbs.com:8090/zsoft/fetchMenuItem.ewsvc")
-		.then(function (response) {console.log("meniItem",response.data);$scope.menuItemList=response.data });
-	
-	var tomorrow = new Date(new Date().getTime() + 24*60*60*1000);
-	$scope.startDate = tomorrow.toISOString().substring(0, 10);
-	var currentDay = tomorrow;
-	
-	for (var i=0; i <2; i++) {
-		$scope.deliverySo = []; // 4 deliverys 
-		for (var deliveryTime = 1; deliveryTime <=4; deliveryTime++){
-			$scope.so = {};
-			$scope.so.selectedItems = [];
-			$scope.so.selectedAddOnItems = [];
-			$scope.so.noDel = deliveryTime;
-			$scope.deliverySo.push($scope.so);
-		}
-		$scope.tabs.push(
-				{ title:currentDay.getDate()+"/"+(currentDay.getMonth()+1), content:currentDay
-				  , deliverySo: $scope.deliverySo 
-				}
-		);
-		currentDay = new Date(currentDay.getTime() + 24*60*60*1000);
-	}
-	$scope.changeDate = function(){
-		$scope.tabs = [];
-		currentDay = new Date($scope.startDate);
-		for (var i=0; i <2; i++) {
-			$scope.deliverySo = []; // 4 deliverys 
-			for (var deliveryTime = 1; deliveryTime <=4; deliveryTime++){
-				$scope.so = {};
-				$scope.so.selectedItems = [];
-				$scope.so.noDel = deliveryTime;
-				$scope.deliverySo.push($scope.so);
-			}
-			$scope.tabs.push(
-					{ title:currentDay.getDate()+"/"+(currentDay.getMonth()+1), content:currentDay
-					  , deliverySo: $scope.deliverySo 
-					}
-			);
-			currentDay = new Date(currentDay.getTime() + 24*60*60*1000);
-		}
-        initPanel();
-    }
-	$scope.toggleSelection = function($event, itemGroup, item, selectedItems) {
-		var checkbox = $event.target;
-		
-		var limitSelection = itemGroup.limitSelection;
-		var selected = 0;
-		if ($event.target.checked) {
-			for(var i=0; i<selectedItems.length; i++) {
-				if(item.menuId == selectedItems[i].menuId && item.sequence == selectedItems[i].sequence) {
-					selected = selected + 1;
-				}
-			}
-			if (selected < limitSelection) {
-				$event.target.checked = true;
-				selectedItems.push(item);
-			} else {
-				$event.target.checked = false;
-			}
-		} else {
-			//selectedItems.splice(selectedItems.indexOf(item), 1); // remove item
-			console.log("what is it = ", selectedItems);
-			selectedItems = $scope.removeSelectedItem(item, selectedItems);
-		}
-		console.log(selectedItems);
-	}
-	$scope.ngCheckItem = function (item, selectedItems) {
-		var checked = false;
-		$.each(selectedItems, function(i){
-		    if(selectedItems[i].id === item.id) {
-		    	checked = true;
-		    	return false;
-		    }
-		});
-		return checked;
-	}
-	// remove item from selected List
-	$scope.removeSelectedItem = function(obj, selectedItems) {
-		selectedItems = $.each(selectedItems, function(i){
-		    if(selectedItems[i].id === obj.id) {
-		    	selectedItems.splice(i,1);
-		    	return false
-		    }
-		});
-		console.log("after removed", selectedItems);
-		return selectedItems;
-	}
-	$scope.checkData = function() {
-		console.log("check data tabs=", $scope.tabs);
-	}
-	
- });
+angular.module('app', ["ng-WdatePicker"]).controller('myController', function ($scope, $http) {
+	$scope.Delivery4 = [{title:'Delivery 1'}, {title:'Delivery 2'}, {title:'Delivery 3'}, {title:'Delivery 4'}];
+  	$scope.so = {};
+  	$scope.timeSheet = [];
+  	$http.get("fetchTimeSheet").then(function(response){$scope.timeSheet = response.data;});
+}).directive('accordion',function(){
+	  return {
+	        restrict : 'EA',
+	        replace : true,
+	        transclude : true,
+	        template : '<div ng-transclude></div>',
+	        controller : function() {
+	            var expanders = [];
+	            this.gotOpened = function(selectedExpander) {
+	                angular.forEach(expanders, function(expander) {
+	                    if (selectedExpander != expander) {
+	                        expander.showMe = false;
+	                    }
+	                });
+	            };
+	            this.addExpander = function(expander) {
+	                expanders.push(expander);
+	            };
+	        }
+	    };
+}).directive('expander', function(){
+	  return {
+	        restrict : 'EA',
+	        replace : true,
+	        transclude : true,
+	        require : '^?accordion',
+	        scope : {
+	            expanderTitle : '='
+	        },
+	        template : '<dl class="panel panel-default" style="margin-top:5px;">'
+	                 +' <dt ng-click="toggle()" class="panel-header" style="cursor:pointer;">{{expanderTitle}}<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>'
+	                 + '<dd ng-show="showMe" ng-transclude class="panel-body"></dd>'
+	                 + '</dl>',
+	        link : function(scope, iElement, iAttrs, accordionController) {
+	            scope.showMe = false;
+	            accordionController.addExpander(scope);
+	            scope.toggle = function toggle() {
+	                scope.showMe = !scope.showMe;
+	                accordionController.gotOpened(scope);
+	            };
+	        }
+	    };
+});
 </script> 
