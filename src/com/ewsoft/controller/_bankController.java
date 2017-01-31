@@ -27,7 +27,7 @@ public class _bankController extends BaseController{
 	private StockService stockSvc;
 	
 	/****************************** page forward ***************************************/
-//	@RequestMapping(value="/stock/stockList")
+//	@RequestMapping(value="/backend/stockList")
     public ModelAndView ewGoToPageStockList(HttpServletRequest request, HttpServletResponse response) throws Exception{
 //		logger.debug("online stock list!!!!!!!!!!!");
 		return new ModelAndView("stock/stock-list");

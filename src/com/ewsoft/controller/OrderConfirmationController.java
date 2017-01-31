@@ -29,12 +29,12 @@ public class OrderConfirmationController extends BaseController{
 	private SystemService timeSheetSvc;
 	
 	/****************************** page forward ***************************************/
-	@RequestMapping(value="/order/orderList")
+	@RequestMapping(value="/backend/orderList")
     public ModelAndView ewGoToPageOrderList(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		logger.debug("online ordering!!!!!!!!!!!");
 		return new ModelAndView("order/order-list");
 	}
-	@RequestMapping(value="/order/orderNew")
+	@RequestMapping(value="/backend/orderNew")
     public ModelAndView ewGoToPageOrderNew(HttpServletRequest request, HttpServletResponse response) throws Exception{
 		logger.debug("online ordering!!!!!!!!!!!");
 		return new ModelAndView("order/order-new");

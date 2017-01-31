@@ -74,7 +74,7 @@
 			<dt><i class="Hui-iconfont">&#xe616;</i> Order Confirmation <i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a _href="order/orderList" ng-click="clickLeft($event)" data-title="Order Confirmation" href="javascript:void(0)">Order Confirmation</a></li>
+					<li><a _href="backend/orderList" ng-click="clickLeft($event)" data-title="Order Confirmation" href="javascript:void(0)">Order Confirmation</a></li>
 				</ul>
 			</dd>
 		</dl>
@@ -91,7 +91,7 @@
 			<dt><i class="Hui-iconfont">&#xe616;</i> Stock <i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a _href="stock/stockList" data-title="Stock Item" href="javascript:void(0)">Stock Item</a></li>
+					<li><a _href="backend/stockList" data-title="Stock Item" href="javascript:void(0)">Stock Item</a></li>
 				</ul>
 			</dd>
 		</dl>
@@ -99,7 +99,7 @@
 			<dt><i class="Hui-iconfont">&#xe616;</i> Customer <i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a _href="customer/customerList" data-title="Customer Listing" href="javascript:void(0)"> Customer Listing</a></li>
+					<li><a _href="backend/customerList" data-title="Customer Listing" href="javascript:void(0)"> Customer Listing</a></li>
 				</ul>
 			</dd>
 		</dl>
@@ -107,7 +107,7 @@
 			<dt><i class="Hui-iconfont">&#xe616;</i> System Setup <i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>
 				<ul>
-					<li><a _href="system/timeSheet" data-title="Customer Listing" href="javascript:void(0)"> Time Sheet</a></li>
+					<li><a _href="backend/timeSheet" data-title="Customer Listing" href="javascript:void(0)"> Time Sheet</a></li>
 				</ul>
 			</dd>
 		</dl>

@@ -28,7 +28,7 @@ public class CustomerController extends BaseController{
 	private CustomerService customerSvc;
 	
 	/****************************** page forward ***************************************/
-	@RequestMapping(value="/customer/customerList")
+	@RequestMapping(value="/backend/customerList")
     public ModelAndView ewGoToPageCustomerList(HttpServletRequest request, HttpServletResponse response) throws Exception{
 //		logger.debug("online stock list!!!!!!!!!!!");
 		return new ModelAndView("customer/customer-list");
