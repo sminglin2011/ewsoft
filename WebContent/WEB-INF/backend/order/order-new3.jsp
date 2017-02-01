@@ -37,13 +37,17 @@
         <div class="formControls col-xs-4">
         	<span class="select-box">
 				<select ng-model="so.custCode" class="select">
-					<option value=""></option>
-                    <option value="{{ c.id }}" ng-repeat="c in customerList track by c.id">{{ c.name}} / {{c.contactPerson}} / {{c.telephone}}</option>
+                    <option value="{{ c.id }}" ng-repeat="c in customerList track by c.code">{{ c.name}} / {{c.contactPerson}} / {{c.telephone}}</option>
                 </select>
             </span>
         </div>
-        <label class="form-label col-xs-1" ng-if="!so.custCode"><a ng-click='newCustomer(1)' class="btn btn-danger radius"><i class="Hui-iconfont">&#xe600;</i>New Customer</a></label>
-        <label class="form-label col-xs-1" ng-if="so.custCode"><a ng-click='newCustomer(0)' class="btn btn-success radius"><i class="Hui-iconfont">&#xe600;</i>Edit Customer</a></label>
+        <label class="form-label col-xs-1"><a ng-click='newCustomer()' class="btn btn-danger radius"><i class="Hui-iconfont">&#xe600;</i>New</a></label>
+    </div>
+    <div class="row cl">
+        <label class="form-label col-xs-2">Address:</label>
+        <div class="formControls col-xs-6">
+            <input type="text" class="input-text" ng-model="so.customer.address1" >
+        </div>
     </div>
     <div class="row cl">
         <label class="form-label col-xs-2"><span class="c-red">*</span>Event Date:</label>
@@ -207,6 +211,13 @@
                     <input type="text" ng-model="customer.address1" datatype="*4-50" class="input-text">
                 </div>
 			</div>
+			<div class="row cl">
+                <div class="formControls col-xs-7 col-xs-offset-5">
+                    <button class="btn btn-success" ng-click="saveCustomer()">
+                        <i class="Hui-iconfont Hui-iconfont-save"></i> Save
+                    </button>
+                </div>
+            </div>
 	</form>
 </div>
 </div>
@@ -254,50 +265,42 @@ angular.module('app', ["ng-WdatePicker","ngRoute"]).controller('myController', f
 	$http.get("fetchAllMenuItemGroup").then(function(response){$scope.menuItemGroupList = response.data;});
 	$scope.menuItemList = [];
 	$http.get("fetchAllMenuItem").then(function(response){$scope.menuItemList = response.data;});
-
-  	$scope.newCustomer = function(isNew) {
-  		if(isNew == 1){
-  			$scope.customer.id = "";
-  		} else {
-  			$scope.customer = $http.get("getCustomerInfo?customerId="+$scope.so.custCode).then(function(response) {$scope.customer = response.data})
-  		}
-  		layer.open({
+	var popupIndex = 0;
+  	$scope.newCustomer = function() {
+  		popupIndex = layer.open({
   			type:1,
   			title: "New Customer",
   			content: $("#customerDiv"),
   			area: ['800px', '600px'],
-  			btn: ['Save']
-		  	,yes: function(index, layero){
-		  		$http({
-		  	        url: 'saveCustomer',
-		  	      	method: "POST",
-		          	dataType: "json",
-		          	headers: { 'Content-Type': 'application/json; charset=UTF-8' }, //application/x-www-form-urlencoded; charset=UTF-8
-		          	data: $scope.customer
-		  	    })
-		  	    .then(function(response) {// success
-		  	        console.log("success", response.data);
-		  	    	$scope.customer = response.data;
-		  	    	if(isNew == 1){
-		  	    		$scope.customerList.push($scope.customer);
-			  	    	$scope.so.custCode = $scope.customer.id;
-		  	    	}
-		  	    	console.log("herererererer");
-		  	    	layer.close(index);
-		  	    }, 
-		  	    function(response) { // optional // failed
-		  	    	 console.log("failed");
-		  	    });
-		  	}
-  		, cancel: function(){
-  			console.log("close");
-  		}
   		});
+  	}
+  	$scope.saveCustomer = function() {
+  		console.log();
+  		 $http({
+  	        url: 'saveCustomer',
+  	      	method: "POST",
+          	dataType: "json",
+          	headers: { 'Content-Type': 'application/json; charset=UTF-8' }, //application/x-www-form-urlencoded; charset=UTF-8
+          	data: $scope.customer
+  	    })
+  	    .then(function(response) {// success
+  	        console.log("success", response.data);
+  	    	layer.msg(response.data, {icon:1});
+  	    	$scope.customer = response.data;
+  	    	$scope.customerList.push($scope.customer);
+  	    	$scope.so.custCode = $scope.customer.id;
+  	    	//layer.close(popupIndex)
+  	    }, 
+  	    function(response) { // optional // failed
+  	    	 console.log("failed");
+  	    });
+  		
+  		layer_close();
   	}
   	$scope.selectedMenu = function(menuGroupId, menuId) {
   		$scope.currentMenuGroupId = menuGroupId;
   		$scope.currentMenuId = menuId;
-  		layer.open({
+  		popupIndex = layer.open({
   			type:1,
   			content: $("#menuItemDiv"),
   			area: ['800px', '600px']

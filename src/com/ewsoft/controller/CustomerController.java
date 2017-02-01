@@ -7,10 +7,12 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ewsoft.domain.Customer;
 import com.ewsoft.service.CustomerService;
 import com.ewsoft.service.OrderConfirmationService;
 import com.ewsoft.service.StockService;
@@ -44,4 +46,21 @@ public class CustomerController extends BaseController{
 		log.debug("coming !!!!!!!");
 		return JsonView.Render(customerSvc.loadCustomerList(), res);
 	}
+	@ResponseBody
+	@RequestMapping(value="/getCustomerInfo")
+	public Object getCustomerInfo(ModelMap model, HttpServletResponse res, String customerId) throws Exception {
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		log.debug("coming !!!!!!!");
+		Customer customer = customerSvc.loadCustomer(customerId);
+		return JsonView.Render(customer, res);
+	}
+	@ResponseBody
+	@RequestMapping(value="/saveCustomer")
+	public Object SaveCustomer(ModelMap model, HttpServletResponse res, @RequestBody Customer customer) throws Exception {
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		log.debug(" =coming !!!!!!!"+ customer);
+		customer = customerSvc.saveCustomer(customer);
+		return JsonView.Render(customer, res);
+	}
+	
 }
