@@ -103,6 +103,14 @@
 				</ul>
 			</dd>
 		</dl>
+		<dl id="menu-supplier">
+			<dt><i class="Hui-iconfont">&#xe616;</i> Supplier <i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
+			<dd>
+				<ul>
+					<li><a _href="backend/supplierList" data-title="Supplier Listing" href="javascript:void(0)"> Supplier Listing</a></li>
+				</ul>
+			</dd>
+		</dl>
 		<dl id="menu-setting">
 			<dt><i class="Hui-iconfont">&#xe616;</i> System Setup <i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
 			<dd>

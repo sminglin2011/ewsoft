@@ -43,12 +43,12 @@
             </span>
         </div>
         <label class="form-label col-xs-1" ng-if="!so.custCode"><a ng-click='newCustomer(1)' class="btn btn-danger radius"><i class="Hui-iconfont">&#xe600;</i>New Customer</a></label>
-        <label class="form-label col-xs-1" ng-if="so.custCode"><a ng-click='newCustomer(0)' class="btn btn-success radius"><i class="Hui-iconfont">&#xe600;</i>Edit Customer</a></label>
+        <label class="form-label col-xs-1" ng-if="so.custCode"><a ng-click='newCustomer(0)' class="btn btn-success radius"><i class="Hui-iconfont">&#xe6df;</i>Edit Customer</a></label>
     </div>
     <div class="row cl">
         <label class="form-label col-xs-2"><span class="c-red">*</span>Event Date:</label>
         <div class="formControls col-xs-1">
-        	<input type="text" class="input-text date" ng-model="so.eventDate" datatype="*">
+        	<input type="text" class="input-text date" wdate-Picker ng-model="so.eventDate" datatype="*">
         </div>
         
         <label class="form-label col-xs-2"><span class="c-red">*</span>Event Time:</label>
@@ -230,7 +230,6 @@ $(function(){
 	$(".select").select2();
 	$.Huifold("#Huifold1 .item h4","#Huifold1 .item .info","fast",1,"click"); /*5个参数顺序不可打乱，分别是：相应区,隐藏显示的内容,速度,类型,事件*/
 });
-var obj = {address:'111'};
 angular.module('app', ["ng-WdatePicker","ngRoute"]).controller('myController', function ($scope, $http, $timeout) {
 	$scope.currentMenuGroupId = '';
 	$scope.currentMenuId = "";
@@ -299,8 +298,16 @@ angular.module('app', ["ng-WdatePicker","ngRoute"]).controller('myController', f
   		$scope.currentMenuId = menuId;
   		layer.open({
   			type:1,
+  			title: "Select MenuItem",
   			content: $("#menuItemDiv"),
   			area: ['800px', '600px']
+  			, btn: ['Save']
+  			, yes: function(index, layero) {
+  				
+  			}
+  			, cancel: function(){
+  				console.log("close")
+  			}
   		});
   	}
 }).directive('accordion',function(){
@@ -360,4 +367,5 @@ angular.module('app', ["ng-WdatePicker","ngRoute"]).controller('myController', f
         templateUrl : "blue.htm"
     });
 });
+
 </script> 

@@ -29,5 +29,8 @@ public class SystemDao {
 		return list;
 	}
 	
+	public String getNumberPrefix(String parameterConstant) throws DataAccessException {
+		return jdbcTemplate.queryForObject("select value from m07Parameter where Name= ? ", new Object[] { parameterConstant }, String.class);
+	}
 	/************* original field end *****************/
 }

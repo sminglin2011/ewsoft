@@ -1,6 +1,7 @@
 package com.ewsoft.service;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import com.ewsoft.dao.MenuDao;
 import com.ewsoft.dao.StockDao;
 import com.ewsoft.domain.Customer;
 import com.ewsoft.util.GeneratorId;
+import com.ewsoft.util.SequenceGenerator;
 
 @Service
 public class CustomerService {
@@ -36,7 +38,7 @@ public class CustomerService {
 	 * @throws RuntimeException
 	 */
 	public Customer loadCustomer(String customerId) throws RuntimeException {
-		return customerDao.fetchCustomerList(customerId);
+		return customerDao.fetchCustomer(customerId);
 	}
 	/**
 	 * save Customer

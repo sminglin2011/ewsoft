@@ -10,55 +10,50 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ewsoft.domain.PR;
 import com.ewsoft.exception.BusinessException;
 import com.ewsoft.service.OrderConfirmationService;
+import com.ewsoft.service.PurchaserRequisitionService;
 import com.ewsoft.service.StockService;
 import com.ewsoft.views.JsonView;
 
 @Controller
-public class StockController extends BaseController{
+public class PurchaseRequisitionController extends BaseController{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	Logger logger = Logger.getLogger(StockController.class);
+	Logger logger = Logger.getLogger(PurchaseRequisitionController.class);
 	@Autowired
-	private StockService stockSvc;
+	private PurchaserRequisitionService prSvc;
 	
 	/****************************** page forward ***************************************/
-	@RequestMapping(value="/backend/stockList")
+	@RequestMapping(value="/backend/purchaseRequest")
     public ModelAndView ewGoToPageStockList(HttpServletRequest request, HttpServletResponse response) throws Exception{
-		logger.debug("online stock list!!!!!!!!!!!");
-		return new ModelAndView("stock/stock-list");
+		return new ModelAndView("purchase/purchase-request");
 	}
 	/****************************** ***************************************/
 	@ResponseBody
-	@RequestMapping(value="/fetchStockList")
-	public Object fetchStockList(ModelMap model, HttpServletResponse res) throws Exception {
+	@RequestMapping(value="/submitPR")
+	public Object fetchStockList(ModelMap model, HttpServletResponse res, @RequestBody PR pr) throws Exception {
 		res.setHeader("Access-Control-Allow-Origin", "*");
-		//res.setHeader("Access-Control-Allow-Methods","POST");
-		//res.setHeader("Access-Control-Allow-Headers","x-requested-with,content-type");
-		logger.debug("coming !!!!!!!");
-		return JsonView.Render(stockSvc.loadStockList(), res);
-	}
-	
-	@ResponseBody
-	@RequestMapping(value="/submitDefaultSupplier")
-	public Object submitDefaultSupplier(ModelMap model, HttpServletResponse res, String param, String supplierId) throws Exception {
-		logger.debug("param==" + param + " , supplier = " + supplierId);
+		log.debug("coming !!!!!!!" + pr);
 		Map<String, Object> map = new HashMap<>();
 		map.put("status", true);
 		map.put("msg", "success");
 		try {
-			stockSvc.updateStockDefaultSupplier(param, supplierId);
+			prSvc.savePr(pr);
 		} catch (BusinessException e) {
-			map.put("status", true);
+			map.put("status", false);
 			map.put("msg", e.getMessage());
+		} catch (Exception e) {
+			throw e;
 		}
 		
 		return JsonView.Render(map, res);

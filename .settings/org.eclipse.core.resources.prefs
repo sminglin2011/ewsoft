@@ -5,3 +5,5 @@ encoding//WebContent/WEB-INF/backend/menu/menu-group-list.jsp=UTF-8
 encoding//WebContent/WEB-INF/backend/menu/menu-setup.jsp=UTF-8
 encoding//WebContent/WEB-INF/backend/order/order-list.jsp=UTF-8
 encoding//WebContent/WEB-INF/backend/order/order-new.jsp=UTF-8
+encoding//WebContent/WEB-INF/backend/purchase/purchase-request.jsp=UTF-8
+encoding//WebContent/WEB-INF/backend/stock/stock-list.jsp=UTF-8

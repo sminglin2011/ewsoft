@@ -40,7 +40,7 @@ public class CustomerDao {
 	 * fetch customer (original field)
 	 * @return
 	 */
-	public Customer fetchCustomerList(String customerId) throws DataAccessException {
+	public Customer fetchCustomer(String customerId) throws DataAccessException {
 		List list = null;
 		list = jdbcTemplate.queryForList(
 				"select c.code, c.isCustomer, c.id, c.name, c.addPostal, c.telephone, c.fax, c.billAddress1, c.billPostal"

@@ -27,4 +27,7 @@ public class StockService {
 		return list;
 	}
 	
+	public void updateStockDefaultSupplier(String stockIds, String supplierId) {
+		stockDao.updateStockDefaulSupplier(stockIds, supplierId);
+	}
 }
