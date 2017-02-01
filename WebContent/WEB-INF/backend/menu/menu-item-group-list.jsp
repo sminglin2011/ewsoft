@@ -92,6 +92,7 @@
     <script type="text/javascript" src="lib/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript" src="lib/My97DatePicker/ng-WdatePicker.js"></script>
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/snd_util.js"></script>
 </body>
 <script type="text/javascript">
 (function(){

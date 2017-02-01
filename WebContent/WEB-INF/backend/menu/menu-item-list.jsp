@@ -101,8 +101,9 @@
     <script type="text/javascript" src="lib/My97DatePicker/WdatePicker.js"></script>
     <script type="text/javascript" src="lib/My97DatePicker/ng-WdatePicker.js"></script>
     <script type="text/javascript" src="lib/select2-4.0.3/dist/js/select2.js"></script>
-<link rel="stylesheet" type="text/css" href="lib/select2-4.0.3/dist/css/select2.css" />
+	<link rel="stylesheet" type="text/css" href="lib/select2-4.0.3/dist/css/select2.css" />
     <script type="text/javascript" src="js/app.js"></script>
+    <script type="text/javascript" src="js/snd_util.js"></script>
 </body>
 <script type="text/javascript">
 (function(){
