@@ -44,6 +44,13 @@ public class DeliveryAppController extends BaseController{
 		return JsonView.Render(soSvc.loadDeliveryOrderList(""), res);
 	}
 	@ResponseBody
+	@RequestMapping(value="/fetchOrderCollectionList")
+	public Object fetchOrderCollectionList(ModelMap model, HttpServletResponse res) throws Exception {
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		log.debug("coming !!!!!!!");
+		return JsonView.Render(soSvc.loadCollectionOrderList(""), res);
+	}
+	@ResponseBody
 	@RequestMapping(value="/fetchOrderDelivery")
 	public Object fetchOrderDelivery(ModelMap model, HttpServletResponse res, String soNumber) throws Exception {
 		res.setHeader("Access-Control-Allow-Origin", "*");

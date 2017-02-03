@@ -53,6 +53,29 @@ public class OrderConfirmationDao {
 	}
 	
 	/**
+	 * for delivery App collection order listing
+	 * @return
+	 * @throws DataAccessException
+	 */
+	public List fetchCollectionOrderList() throws DataAccessException {
+		List list = null;
+		String sql = "select distinct(a.soNumber), (select sum(valueOriginal) from IEATZ2015.dbo.m02Sodet where sonumber = a.SoNumber) as orderAmount"
+				+ ", a.code, a.docType, a.soDate, a.billStatus, a.postStatus, a.deliverStatus"
+				+ ", a.referenceOur, a.referenceYour, a.terms, a.termsDay, a.incoTerm, a.custCode, a.custAttention"
+				+ ", a.custName, a.custAddPostal, a.custAddCountry, a.custTelephone, a.custAddress1, a.dueDate"
+				+ ", a.valueOriginal, a.billOriginal, a.balanceOriginal, a.totalQuantity"
+				+ ", a.deliveryComments, a.cst, a.kst, a.pst, a.dst, a.poNo, a.eventDate, a.eventTime, a.deliveryDate"
+				+ ", a.deliveryTime, a.collectionDate, a.collectionTime, a.noPax, a.payType, a.mainSoNo"
+				+ ", a.delYN, a.colYN , a.invNo, a.schDelTime, a.schDelDate, a.custDelAtt"
+				+ ", a.schCollectionDate, a.schCollectionTime"
+				+ " from m02So a "
+				+ " where a.schCollectionTime != '' and a.postStatus = 'P' and deliverStatus = 'D' and a.colYN ='1' and a.schCollectionDate >='"+DataFormat.dateToString(new Date())+"'" 
+				+ " order by a.schCollectionDate  desc, a.schCollectionTime asc";
+		list = jdbcTemplate.queryForList(sql);
+		return list;
+	}
+	
+	/**
 	 * for delivery App delivery order listing
 	 * @return
 	 * @throws DataAccessException
@@ -67,6 +90,7 @@ public class OrderConfirmationDao {
 				+ ", a.deliveryComments, a.cst, a.kst, a.pst, a.dst, a.poNo, a.eventDate, a.eventTime, a.deliveryDate"
 				+ ", a.deliveryTime, a.collectionDate, a.collectionTime, a.noPax, a.payType, a.mainSoNo"
 				+ ", a.delYN, a.colYN , a.invNo, a.schDelTime, a.schDelDate, a.custDelAtt"
+				+ ", a.schCollectionDate, a.schCollectionTime"
 				+ " from m02So a "
 				+ " where a.SchDelTime != '' and a.postStatus = 'P' and a.delYN ='1' and a.schDelDate >='"+DataFormat.dateToString(new Date())+"'" 
 				+ " order by a.SchDelDate  desc, a.SchDelTime asc";
@@ -81,12 +105,14 @@ public class OrderConfirmationDao {
 				obj.setCustCode(rs.getString("custCode"));
 				obj.setCustDelAtt(rs.getString("custDelAtt"));
 				obj.setCustName(rs.getString("custName"));
-				obj.setDeliveryStatus(rs.getString("deliverStatus"));
+				obj.setDeliverStatus(rs.getString("deliverStatus"));
 				obj.setNoPax(rs.getString("noPax"));
 				obj.setPayType(rs.getString("payType"));
 				obj.setSchDelDate(rs.getString("schDelDate"));
 				obj.setSchDelTime(rs.getString("schDelTime"));
 				obj.setSoNumber(rs.getString("soNumber"));
+				obj.setSchCollectionDate(rs.getString("schCollectionDate"));
+				obj.setSchCollectionTime(rs.getString("schCollectionTime"));
 				return obj;
 			}
 		};
@@ -98,6 +124,7 @@ public class OrderConfirmationDao {
 				+ ", a.deliveryComments, a.cst, a.kst, a.pst, a.dst, a.poNo, a.eventDate, a.eventTime, a.deliveryDate"
 				+ ", a.deliveryTime, a.collectionDate, a.collectionTime, a.noPax, a.payType, a.mainSoNo"
 				+ ", a.delYN, a.colYN , a.invNo, a.schDelTime, a.schDelDate, a.custDelAtt"
+				+ ", a.schCollectionDate, a.schCollectionTime"
 				+ " from m02So a where a.soNumber = ? ", rowMapper, soNumber);
 	}
 	

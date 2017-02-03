@@ -22,6 +22,12 @@ public class OrderConfirmationService {
 		return list;
 	}
 	
+	public List loadCollectionOrderList(String keyword) throws RuntimeException {
+		if (keyword == null) keyword = "";
+		List list = orderDao.fetchCollectionOrderList();
+		return list;
+	}
+	
 	public List loadDeliveryOrderList(String keyword) throws RuntimeException {
 		if (keyword == null) keyword = "";
 		List list = orderDao.fetchDeliveryOrderList();
