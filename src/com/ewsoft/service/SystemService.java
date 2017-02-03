@@ -28,4 +28,17 @@ public class SystemService {
 		return list;
 	}
 	
+	/**
+	 * 加载 vehicle listing
+	 * @return
+	 * @throws RuntimeException
+	 */
+	public List loadVehicleList() throws RuntimeException {
+		List list = systemDao.fetchVehicleList();
+		return list;
+	}
+	
+	public boolean deliveryAppLoginByVehicleNo(String vehicleNo) {
+		return systemDao.fetchVehicleByvehicleNoForDeliveryApp(vehicleNo);
+	}
 }

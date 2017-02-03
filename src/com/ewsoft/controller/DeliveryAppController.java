@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ewsoft.service.OrderConfirmationService;
 import com.ewsoft.service.StockService;
+import com.ewsoft.service.SystemService;
 import com.ewsoft.views.JsonView;
 
 @Controller
@@ -25,6 +26,18 @@ public class DeliveryAppController extends BaseController{
 	Logger logger = Logger.getLogger(DeliveryAppController.class);
 	@Autowired
 	private OrderConfirmationService soSvc;
+	@Autowired
+	private SystemService systemSvc;
+	/******************* delivery app login by vehicle no.******************************/
+	
+	@ResponseBody
+	@RequestMapping(value="/deliveryAppLogin")
+	public Object deliveryAppLogin(ModelMap model, HttpServletResponse res, String vehicleNo) throws Exception {
+		res.setHeader("Access-Control-Allow-Origin", "*");
+		log.debug("coming !!!!!!!");
+		boolean result = systemSvc.deliveryAppLoginByVehicleNo(vehicleNo);
+		return JsonView.Render(result, res);
+	}
 	
 	/****************************** page forward ***************************************/
 	@RequestMapping(value="/orderDeliveryList")

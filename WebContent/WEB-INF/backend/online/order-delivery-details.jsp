@@ -27,7 +27,7 @@
 <body>
 <div class="page-container">
 	<div class="mt-20">
-	ddddddddddddddddddddddddddddddddddddddd
+	
 	</div>
 </div>
 	<script type="text/javascript" src="lib/jquery/1.9.1/jquery.min.js"></script>

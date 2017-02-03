@@ -57,7 +57,7 @@ public class OrderConfirmationDao {
 	 * @return
 	 * @throws DataAccessException
 	 */
-	public List fetchCollectionOrderList() throws DataAccessException {
+	public List fetchCollectionOrderList(String keyword) throws DataAccessException {
 		List list = null;
 		String sql = "select distinct(a.soNumber), (select sum(valueOriginal) from IEATZ2015.dbo.m02Sodet where sonumber = a.SoNumber) as orderAmount"
 				+ ", a.code, a.docType, a.soDate, a.billStatus, a.postStatus, a.deliverStatus"
@@ -80,7 +80,7 @@ public class OrderConfirmationDao {
 	 * @return
 	 * @throws DataAccessException
 	 */
-	public List fetchDeliveryOrderList() throws DataAccessException {
+	public List fetchDeliveryOrderList(String keyword) throws DataAccessException {
 		List list = null;
 		String sql = "select distinct(a.soNumber), (select sum(valueOriginal) from IEATZ2015.dbo.m02Sodet where sonumber = a.SoNumber) as orderAmount"
 				+ ", a.code, a.docType, a.soDate, a.billStatus, a.postStatus, a.deliverStatus"

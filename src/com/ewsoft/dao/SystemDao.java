@@ -32,5 +32,21 @@ public class SystemDao {
 	public String getNumberPrefix(String parameterConstant) throws DataAccessException {
 		return jdbcTemplate.queryForObject("select value from m07Parameter where Name= ? ", new Object[] { parameterConstant }, String.class);
 	}
+	
+	/**
+	 * fetch vehicle listing
+	 * @return
+	 * @throws DataAccessException
+	 */
+	public List fetchVehicleList() throws DataAccessException {
+		return jdbcTemplate.queryForList("select v.assetRegNo as vehicleNo from m09asset");
+	}
+	
+	public boolean fetchVehicleByvehicleNoForDeliveryApp(String vehicleNo) {
+		String sql = "select count(assetRegNo) from m09asset where assetRegNo = ?";
+		Integer count = jdbcTemplate.queryForObject(sql, Integer.class);
+		if (count == 0) return false;
+		else return true;
+	}
 	/************* original field end *****************/
 }
